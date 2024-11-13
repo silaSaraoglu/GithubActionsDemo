@@ -1,4 +1,0 @@
-name: caller-demo1
-'on':
-  workflow_call: {}
-jobs:
