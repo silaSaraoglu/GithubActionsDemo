@@ -1,6 +1,8 @@
 name: hello-world
 'on':
   workflow_call: {}
+  schedule:
+    - cron: '*/5 * * * *'  # Run every 30 minutes
 jobs:
   reusable_workflow_job:
     runs-on: ubuntu-latest
