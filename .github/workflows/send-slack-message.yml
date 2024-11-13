@@ -7,21 +7,4 @@ jobs:
       - name: Download matrix parameters from artifact
         uses: actions/download-artifact@v4
         with:
-          name: matrix-parameters
-      - name: Read and print matrix parameter
-        run: |
-          parameter=$(cat matrix_param.txt)
-          echo "Matrix parameter: $parameter"
-  sending-slack-message:
-    runs-on: ubuntu-latest
-    steps:
-      - name: send slack channel message
-        uses: slackapi/slack-github-action@v1.27.0
-        with:
-          payload: |
-            {
-              "text": "Hellooo",
-            }
-        env:
-            SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
-            SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
+          name: matrix-parameters-${{ matrix.parameter }}
