@@ -8,7 +8,12 @@ jobs:
   download-get-artifact:
     runs-on: ubuntu-latest
     steps:
-      - name: Download matrix parameters from artifact
-        uses: actions/download-artifact@v4
-        with:
-          name: matrix-parameters-${{ matrix.parameter }}
+      - name: Download other matrix parameters artifacts
+        run: |
+          for param in 1 2 3; do
+            echo "Downloading artifact for parameter $param"
+            # Download the artifact dynamically based on the parameter number
+            curl -L -o "matrix_param_${param}.txt" "https://github.com/${{ github.repository }}/actions/artifacts/${{ github.event.workflow_run.outputs['parameter-'${param}] }}"
+
+          done
+        
