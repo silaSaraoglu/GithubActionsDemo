@@ -2,11 +2,13 @@ name: hello-world
 'on':
   workflow_call: {}
   schedule:
-    - cron: '*/30 * * * *'  # Run every 30 minutes
+    - cron: '*/30 * * * *'  # Run every 5 minutes
 jobs:
   reusable_workflow_job:
     runs-on: ubuntu-latest
     steps:
+      - name: Print current date/time
+        run: date
       - name: Send message to Slack
         run: |
           curl -X POST -H 'Content-type: application/json' \
