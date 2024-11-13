@@ -11,3 +11,10 @@ jobs:
     steps:
     - name: Run Integration Tests
       run: echo "Running integration tests with parameter ${{ matrix.parameter }}"
+    - name: Save matrix parameter to a file
+      run: echo "parameter=${{ matrix.parameter }}" > matrix_param.txt
+    - name: Upload matrix parameter artifact
+      uses: actions/upload-artifact@v2
+      with:
+          name: matrix-parameters
+          path: matrix_param.txt
