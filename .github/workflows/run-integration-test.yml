@@ -1,0 +1,13 @@
+name: run-integration-tests
+on:
+  workflow_dispatch: {}
+  workflow_call: {}
+jobs:
+  run-tests:
+    runs-on: ubuntu-22.04
+    strategy:
+      matrix: 
+        parameter: [1, 2, 3]
+    steps:
+    - name: Run Integration Tests
+      run: echo "Running integration tests with parameter ${{ matrix.parameter }}"
