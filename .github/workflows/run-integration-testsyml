@@ -1,6 +1,6 @@
-name: hello-world
-'on':
-  workflow_call: {}
+name: run-integration-tests
+on:
+  workflow_dispatch: {}
 jobs:
   reusable_workflow_job:
     runs-on: ubuntu-latest
