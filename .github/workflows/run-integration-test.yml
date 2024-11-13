@@ -18,3 +18,6 @@ jobs:
         with:
           name: matrix-parameters-${{ matrix.parameter }}  # Unique artifact name for each matrix job
           path: matrix_param.txt
+      - name: Set output for matrix parameter
+        id: output
+        run: echo "::set-output name=parameter-${{ matrix.parameter }}::${{ matrix.parameter }}"
