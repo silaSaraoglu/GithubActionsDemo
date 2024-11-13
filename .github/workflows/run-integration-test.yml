@@ -16,5 +16,5 @@ jobs:
       - name: Upload matrix parameter artifact
         uses: actions/upload-artifact@v4
         with:
-          name: matrix-parameters
+          name: matrix-parameters-${{ matrix.parameter }}  # Unique artifact name for each matrix job
           path: matrix_param.txt
