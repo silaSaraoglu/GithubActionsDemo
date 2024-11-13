@@ -1,19 +1,34 @@
-name: send-slack-message
+name: download-matrix-artifacts
 on:
+  workflow_dispatch:
   workflow_run:
-    workflows: ["run-integration-test"]
+    workflows: ["run-integration-tests"]  # Name of the first workflow
     types:
-      - completed
+      - completed  # Trigger when the first workflow finishes
 jobs:
-  download-get-artifact:
+  download-artifacts:
     runs-on: ubuntu-latest
     steps:
-      - name: Download other matrix parameters artifacts
+      - name: Download matrix parameters artifact for parameter 1
         run: |
-          for param in 1 2 3; do
-            echo "Downloading artifact for parameter $param"
-            # Download the artifact dynamically based on the parameter number
-            curl -L -o "matrix_param_${param}.txt" "https://github.com/${{ github.repository }}/actions/artifacts/${{ github.event.workflow_run.outputs['parameter-'${param}] }}"
+          echo "Downloading artifact for parameter 1"
+          curl -L -o "matrix_param_1.txt" \
+            "https://github.com/${{ github.repository }}/actions/artifacts/${{ github.event.workflow_run.outputs.parameter-1 }}"
 
-          done
-        
+      - name: Download matrix parameters artifact for parameter 2
+        run: |
+          echo "Downloading artifact for parameter 2"
+          curl -L -o "matrix_param_2.txt" \
+            "https://github.com/${{ github.repository }}/actions/artifacts/${{ github.event.workflow_run.outputs.parameter-2 }}"
+
+      - name: Download matrix parameters artifact for parameter 3
+        run: |
+          echo "Downloading artifact for parameter 3"
+          curl -L -o "matrix_param_3.txt" \
+            "https://github.com/${{ github.repository }}/actions/artifacts/${{ github.event.workflow_run.outputs.parameter-3 }}"
+
+      - name: Print downloaded artifacts
+        run: |
+          cat matrix_param_1.txt
+          cat matrix_param_2.txt
+          cat matrix_param_3.txt
