@@ -1,5 +1,9 @@
 name: send-slack-message
-on: workflow_dispatch
+on:
+  workflow_run:
+    workflows: ["run-integration-test"]
+    types:
+      - completed
 jobs:
   download-get-artifact:
     runs-on: ubuntu-latest
