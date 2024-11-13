@@ -1,0 +1,5 @@
+name: caller-demo1
+on: push
+jobs:
+  call-workflow-1-in-local-repo:
+    uses: GithubActionsDemo/.github/workflows/demo1.yml@main
