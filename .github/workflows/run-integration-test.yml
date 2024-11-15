@@ -3,7 +3,7 @@ on:
   workflow_dispatch:
     inputs:
         test-case:
-        description: Test case to run integration tests for
+        description: Test case to run for
         required: false
         type: choice
         options:
@@ -11,7 +11,6 @@ on:
           - option 1
           - option 2
           - option 3
-  workflow_call: {}
 jobs:
   init:
     runs-on: ubuntu-latest
