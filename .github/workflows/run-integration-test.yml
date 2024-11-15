@@ -44,19 +44,22 @@ jobs:
       TEST_CASES: ${{ steps.variables.outputs.TEST_CASES }}
   run-tests:
     runs-on: ubuntu-latest
+    needs:
+        - init
     strategy:
       fail-fast: false
       matrix:
         test-cases: ${{ fromJSON(needs.init.outputs.TEST_CASES) }}  
     steps:
       - name: Run ${{matrix.test-cases}} integration tests
+        id: run_tests_step
         run: |
           echo "Running integration tests with parameter ${{ matrix.test-cases }}"
           echo "exit_code=${{ matrix.test-cases }}" >> $GITHUB_OUTPUT
       - name: Collect exit codes
         id: collect
         run: | 
-          echo "{\"${{matrix.test-cases}}\": ${{ steps.run-tests.outputs.exit_code }}}" >> results.json 
+          echo "{\"${{matrix.test-cases}}\": ${{ steps.run_tests_step.outputs.exit_code }}}" >> results.json 
           cat results.json 
           echo "test_results=$(cat results.json)" >> $GITHUB_OUTPUT
     outputs:
