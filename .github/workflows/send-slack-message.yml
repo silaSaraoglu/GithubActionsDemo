@@ -1,16 +1,15 @@
-name: download-matrix-artifacts
+name: send-slack-message
 on:
   workflow_dispatch:
-  workflow_run:
-    workflows: ["run-integration-tests"]  # Name of the first workflow
-    types:
-      - completed  # Trigger when the first workflow finishes
+  # cron job to be implemented
 jobs:
+  # call the run-integration-tests
+  call-run-integration-tests:
+    # set the input to all matrix parameters
+    uses: ./.github/workflows/run-integration-tests.yml
   download-artifacts:
     runs-on: ubuntu-latest
     steps:
-      - name: Get the number of artifacts
-        run: echo "${{ github.event.workflow_run.matrix.parameter }}"
       - name: Download matrix parameters artifact for parameter 1
         run: |
           echo "Downloading artifact for parameter 1"
