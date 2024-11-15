@@ -47,12 +47,12 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        test-cases: ${{fromJSON(needs.init.outputs.TEST_CASES)}}  
+        test-cases: ${{ fromJSON(needs.init.outputs.TEST_CASES) }}  
     steps:
       - name: Run ${{matrix.test-cases}} integration tests
         run: |
-          echo "Running integration tests with parameter ${{ matrix.text-cases }}"
-          echo "exit_code=${{ matrix.text-cases }}" >> $GITHUB_OUTPUT
+          echo "Running integration tests with parameter ${{ matrix.test-cases }}"
+          echo "exit_code=${{ matrix.test-cases }}" >> $GITHUB_OUTPUT
       - name: Collect exit codes
         id: collect
         run: | 
