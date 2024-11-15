@@ -1,0 +1,76 @@
+name: run-integration-tests
+on:
+  workflow_dispatch:
+    inputs:
+      test-case:
+        description: Test case to run for
+        required: false
+        type: choice
+        default: all
+        options:
+          - all
+          - option_1
+          - option_2
+          - option_3
+  workflow_call:
+    inputs:
+      test-case:
+        description: Test case to run for
+        required: false
+        type: string
+        default: all
+    outputs:
+      exit_codes:
+        description: "Exit codes for each test"
+        value: ${{ toJSON(jobs.run-tests.outputs) }}
+
+jobs:
+  init:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Init
+        id: variables
+        run: |
+          echo "Executing integration tests"
+          if [ "${{ inputs.test-case }}" == "all" ]; then
+            TEST_CASES='["option_1", "option_2", "option_3"]'
+          else
+            TEST_CASES='["${{ inputs.test-case }}"]'
+          fi
+          echo "Test cases: $TEST_CASES"
+          echo "TEST_CASES=$TEST_CASES" >> $GITHUB_OUTPUT
+        shell: bash
+    outputs:
+      TEST_CASES: ${{ steps.variables.outputs.TEST_CASES }}
+  run-tests:
+    runs-on: ubuntu-latest
+    needs:
+      - init
+    strategy:
+      fail-fast: false
+      matrix:
+        test-cases: ${{ fromJSON(needs.init.outputs.TEST_CASES) }}
+    steps:
+      - name: Run ${{matrix.test-cases}} integration tests
+        id: run_tests_step
+        run: |
+          echo "Running integration tests with parameter ${{ matrix.test-cases }}"
+          echo "output_${{ matrix.test-cases }}=${{ matrix.test-cases }}" >> "$GITHUB_OUTPUT"
+    outputs:
+      output_1: ${{ steps.run_tests_step.outputs.output_option_1 }}
+      output_2: ${{ steps.run_tests_step.outputs.output_option_2 }}
+      output_3: ${{ steps.run_tests_step.outputs.output_option_3 }}
+
+  integration-tests-status:
+    runs-on: ubuntu-latest
+    needs:
+      - init
+      - run-tests
+    if: always()
+    steps:
+      - name: Successful tests
+        if: ${{ !(contains(needs.*.result, 'failure')) }}
+        run: exit 0
+      - name: Failing tests
+        if: ${{ contains(needs.*.result, 'failure') }}
+        run: exit 1

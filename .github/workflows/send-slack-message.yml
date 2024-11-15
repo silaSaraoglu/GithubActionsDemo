@@ -1,0 +1,43 @@
+name: send-slack-message
+on:
+  workflow_dispatch:
+  # cron job to be implemented
+jobs:
+  # call the run-integration-tests
+  call-run-integration-tests:
+    # set the input to all matrix parameters
+    uses: ./.github/workflows/run-integration-test.yml
+  print-outputs:
+    runs-on: ubuntu-latest
+    needs: call-run-integration-tests
+    steps:
+      - name: Output aggregated test results
+        run: |
+          echo "Test results JSON: ${{ needs.call-run-integration-tests.outputs.exit_codes }}"
+    if: always()
+  # download-artifacts:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: Download matrix parameters artifact for parameter 1
+  #       run: |
+  #         echo "Downloading artifact for parameter 1"
+  #         curl -L -o "matrix_param_1.txt" \
+  #           "https://github.com/${{ github.repository }}/actions/artifacts/${{ github.event.workflow_run.outputs.parameter-1 }}"
+
+  #     - name: Download matrix parameters artifact for parameter 2
+  #       run: |
+  #         echo "Downloading artifact for parameter 2"
+  #         curl -L -o "matrix_param_2.txt" \
+  #           "https://github.com/${{ github.repository }}/actions/artifacts/${{ github.event.workflow_run.outputs.parameter-2 }}"
+
+  #     - name: Download matrix parameters artifact for parameter 3
+  #       run: |
+  #         echo "Downloading artifact for parameter 3"
+  #         curl -L -o "matrix_param_3.txt" \
+  #           "https://github.com/${{ github.repository }}/actions/artifacts/${{ github.event.workflow_run.outputs.parameter-3 }}"
+
+  #     - name: Print downloaded artifacts
+  #       run: |
+  #         cat matrix_param_1.txt
+  #         cat matrix_param_2.txt
+  #         cat matrix_param_3.txt
