@@ -33,7 +33,7 @@ jobs:
         run: |
           echo "Executing integration tests"
           if [ "${{ inputs.test-case }}" == "all" ]; then
-            TEST_CASES='["option 1", "option 2", "option 3]'
+            TEST_CASES='["option 1", "option 2", "option 3"]'
           else
             TEST_CASES='["${{ inputs.test-case }}"]'
           fi
