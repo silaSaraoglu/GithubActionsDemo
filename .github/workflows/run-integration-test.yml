@@ -13,6 +13,13 @@ on:
             - option 2
             - option 3
   workflow_call:
+    inputs:
+        test-case:
+          description: Test case to run for
+          required: false
+          type: string
+          default: all
+          
     outputs:
       first:
         description: "first first"
@@ -47,11 +54,6 @@ jobs:
         run: echo "Running integration tests with parameter ${{ matrix.text-cases }}"
       - name: Save matrix parameter to a file
         run: echo "La la la la ${{ matrix.text-cases }}" > matrix_param.txt
-      - name: Upload matrix parameter artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: matrix-parameters-${{ matrix.test-cases }}  # Unique artifact name for each matrix job
-          path: ./text/test-logs
   integration-tests-status:
     runs-on: ubuntu-latest
     needs:
