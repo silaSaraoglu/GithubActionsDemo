@@ -11,7 +11,22 @@ jobs:
     runs-on: ubuntu-latest
     needs: call-run-integration-tests
     steps:
-      - run: echo ${{ needs.call-run-integration-tests.outputs.TEST_CASES }}
+      - name: Output aggregated test results
+        run: | 
+          echo "Test results JSON: ${{ needs.call-run-integration-tests.outputs.test_results }}"       
+      - name: Analyze exit codes for each test case
+        run: | 
+          TEST_RESULTS='${{ needs.call-run-integration-tests.outputs.test_results }}' 
+          echo "Processing test results..."
+          echo "$TEST_RESULTS" | jq -r 'keys[] as $key | "\($key): \(.[$key])"' | while read -r result; do
+            test_case=$(echo $result | cut -d: -f1) 
+            exit_code=$(echo $result | cut -d: -f2 | xargs)
+            if [ "$exit_code" -ne 0 ]; then 
+              echo ":x: Test case $test_case failed with exit code $exit_code" 
+            else 
+              echo ":white_check_mark: Test case $test_case passed" 
+            fi 
+          done
     if: always()
   # download-artifacts:
   #   runs-on: ubuntu-latest

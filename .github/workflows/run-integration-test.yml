@@ -22,7 +22,7 @@ on:
     outputs:
       first:
         description: "first first"
-        value: ${{ jobs.init.outputs.TEST_CASES }}
+        value: ${{ jobs.run-tests.outputs.test_results }}
 
 jobs:
   init:
@@ -50,9 +50,18 @@ jobs:
         test-cases: ${{fromJSON(needs.init.outputs.TEST_CASES)}}  
     steps:
       - name: Run ${{matrix.test-cases}} integration tests
-        run: echo "Running integration tests with parameter ${{ matrix.text-cases }}"
-      - name: Save matrix parameter to a file
-        run: echo "La la la la ${{ matrix.text-cases }}" > matrix_param.txt
+        run: |
+          echo "Running integration tests with parameter ${{ matrix.text-cases }}"
+          echo "exit_code=${{ matrix.text-cases }}" >> $GITHUB_OUTPUT
+      - name: Collect exit codes
+        id: collect
+        run: | 
+          echo "{\"${{matrix.test-cases}}\": ${{ steps.run-tests.outputs.exit_code }}}" >> results.json 
+          cat results.json 
+          echo "test_results=$(cat results.json)" >> $GITHUB_OUTPUT
+    outputs:
+      test_results: ${{ steps.collect.outputs.test_results }}
+
   integration-tests-status:
     runs-on: ubuntu-latest
     needs:
