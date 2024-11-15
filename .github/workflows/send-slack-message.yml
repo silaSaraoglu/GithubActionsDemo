@@ -9,6 +9,8 @@ jobs:
   download-artifacts:
     runs-on: ubuntu-latest
     steps:
+      - name: Get the number of artifacts
+        run: echo "${{ github.event.workflow_run.matrix.parameter }}"
       - name: Download matrix parameters artifact for parameter 1
         run: |
           echo "Downloading artifact for parameter 1"
