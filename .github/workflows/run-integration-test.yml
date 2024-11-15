@@ -20,7 +20,7 @@ on:
           type: string
           default: all    
     outputs:
-      first:
+      test_results:
         description: "first first"
         value: ${{ jobs.run-tests.outputs.test_results }}
 
