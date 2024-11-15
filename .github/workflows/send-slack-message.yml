@@ -12,6 +12,7 @@ jobs:
     needs: call-run-integration-tests
     steps:
       - run: echo ${{ needs.call-run-integration-tests.outputs.TEST_CASES }}
+    if: always()
   # download-artifacts:
   #   runs-on: ubuntu-latest
   #   steps:
