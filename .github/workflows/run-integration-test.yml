@@ -18,8 +18,7 @@ on:
           description: Test case to run for
           required: false
           type: string
-          default: all
-          
+          default: all    
     outputs:
       first:
         description: "first first"
@@ -33,10 +32,10 @@ jobs:
         id: variables
         run: |
           echo "Executing integration tests"
-          if [ "${{ github.event.inputs.test-case }}" == "all" ]; then
+          if [ "${{ inputs.test-case }}" == "all" ]; then
             TEST_CASES='["option 1", "option 2", "option 3]'
           else
-            TEST_CASES='["${{ github.event.inputs.test-case }}"]'
+            TEST_CASES='["${{ inputs.test-case }}"]'
           fi
           echo "Test cases: $TEST_CASES"
           echo "TEST_CASES=$TEST_CASES" >> $GITHUB_OUTPUT
