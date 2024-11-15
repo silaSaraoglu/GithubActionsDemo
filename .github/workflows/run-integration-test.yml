@@ -59,11 +59,14 @@ jobs:
       - name: Collect exit codes
         id: collect
         run: | 
-          echo "{\"${{matrix.test-cases}}\": ${{ steps.run_tests_step.outputs.exit_code }}}" >> results.json 
+          echo "{\"${{matrix.test-cases}}\": ${{ steps.outputs.exit_code }}}" >> results.json 
           cat results.json 
           echo "test_results=$(cat results.json)" >> $GITHUB_OUTPUT
-    outputs:
-      test_results: ${{ steps.collect.outputs.test_results }}
+      - name: Upload output.json as an artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: output-${{ matrix.test-cases }}
+          path: output.json
 
   integration-tests-status:
     runs-on: ubuntu-latest
