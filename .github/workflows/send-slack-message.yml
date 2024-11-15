@@ -6,7 +6,7 @@ jobs:
   # call the run-integration-tests
   call-run-integration-tests:
     # set the input to all matrix parameters
-    uses: ./.github/workflows/run-integration-tests.yml
+    uses: ./.github/workflows/run-integration-test.yml
   download-artifacts:
     runs-on: ubuntu-latest
     steps:
