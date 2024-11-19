@@ -45,7 +45,7 @@ jobs:
         id: run_tests_step
         run: |
           echo "Running integration tests with parameter ${{ matrix.test-cases }}"
-          echo "exit_code_${{ matrix.test-cases }}=${{ matrix.test-cases }}" >> "$GITHUB_OUTPUT"
+          echo "exit_code=${{ matrix.test-cases }}" >> "$GITHUB_OUTPUT"
       - name: Create ${{matrix.test-cases}} txt
         id: create_sample_txt
         run: |
@@ -71,7 +71,7 @@ jobs:
           webhook: ${{ secrets.SLACK_WEBHOOK_URL }}
           webhook-type: incoming-webhook
           payload: |
-            text: "*Test Artifact URL*: ${{ steps.upload_artifact.outputs.artifact-url }} *Test Exit Code: ${{ steps.run_tests_step.outcome.exit_code_ }}" 
+            text: "*Test Artifact URL*: ${{ steps.upload_artifact.outputs.artifact-url }} Test Exit Code: ${{ steps.run_tests_step.outcome.exit_code }}" 
 
 
 
