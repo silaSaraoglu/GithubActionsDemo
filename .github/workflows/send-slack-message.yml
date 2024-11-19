@@ -17,6 +17,7 @@ jobs:
           echo "${{ needs.call-run-integration-tests.outputs.test_cases }}"
           # Retrieve the string output
           list_str=""${{ needs.call-run-integration-tests.outputs.test_cases }}"
+          echo ${list_str}
 
           # Convert the comma-separated string back into an array (list)
           IFS=',' read -r -a test_case_list <<< "$list_str"
