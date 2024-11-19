@@ -17,13 +17,14 @@ jobs:
         run: |
           echo "Test results JSON: ${{ needs.call-run-integration-tests.outputs.exit_codes }}"
           list_str="$TEST_CASES"
-          # Step 1: Remove the square brackets and surrounding quotes
-          cleaned_list_str=$(echo "$list_str" | sed 's/^\["\(.*\)"\]$/\1/' | sed 's/\\"/"/g' | tr -d '"')
+          cleaned_list_str=$(echo "$list_str" | sed 's/^\[\("\([^"]*\)"\)\(, \)*\]$/\1/g' | sed 's/","/,/g' | tr -d '"')
+
+          # Debugging: Show the cleaned string
+          echo "Cleaned string: $cleaned_list_str"
 
           # Step 2: Split the cleaned string into an array by commas
           IFS=',' read -r -a test_case_list <<< "$cleaned_list_str"
 
-          # Step 3: Print the result to verify
           echo "Array length: ${#test_case_list[@]}"
           echo "Converted array:"
           for test_case in "${test_case_list[@]}"; do
