@@ -20,9 +20,12 @@ on:
         type: string
         default: all
     outputs:
-      test_case_results:
+      test-case-exit-codes:
         description: "Exit codes for each test"
-        value: ${{ toJSON(jobs.run-tests.outputs) }}
+        value: ${{ jobs.run-tests.outputs.exit_codes }}
+      test-case-artifact-urls:
+        description: "Artifact URLs for each test"
+        value: ${{ jobs.run-tests.outputs.artifact_urls }}
 
 jobs:
   init:
@@ -77,12 +80,8 @@ jobs:
           echo 'Artifact URL is ${{ steps.upload_artifact.outputs.artifact-url }}'
           echo "artifact_url_${{ matrix.test-cases }}=${{ steps.upload_artifact.outputs.artifact-url }}" >> "$GITHUB_OUTPUT"
     outputs:
-      exit_code_option_1: ${{ steps.run_tests_step.outputs.exit_code_option_1 }}
-      exit_code_option_2: ${{ steps.run_tests_step.outputs.exit_code_option_2 }}
-      exit_code_option_3: ${{ steps.run_tests_step.outputs.exit_code_option_3 }}
-      artifact_url_option_1: ${{ steps.output_artifacts.outputs.artifact_url_option_1 }}
-      artifact_url_option_2: ${{ steps.output_artifacts.outputs.artifact_url_option_2 }}
-      artifact_url_option_3: ${{ steps.output_artifacts.outputs.artifact_url_option_3 }}
+      exit_codes: ${{ toJson(steps.run_tests_step.outputs) }}
+      artifact_urls: ${{ toJson(steps.output_artifacts.outputs) }}
 
   integration-tests-status:
     runs-on: ubuntu-latest
