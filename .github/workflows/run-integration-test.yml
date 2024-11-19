@@ -66,9 +66,12 @@ jobs:
           echo "artifact_url_${{ matrix.test-cases }}=${{ steps.upload_artifact.outputs.artifact-url }}" >> "$GITHUB_OUTPUT"
       
       - name: Send slack message
-        run: |
-          echo  "${{ toJSON(steps.run_tests_step.outputs) }}"
-          echo  "${{ toJSON(steps.output_artifacts.outputs) }}"
+        uses: slackapi/slack-github-action@v2.0.0
+        with:
+          webhook: ${{ secrets.SLACK_WEBHOOK_URL }}
+          webhook-type: incoming-webhook
+          payload: |
+            text: "Test Exit Code: ${{toJSON(steps.run_tests_step.outputs) }} Artifact URL: ${{ toJSON(steps.output_artifacts.outputs) }}"
 
 
   integration-tests-status:
