@@ -44,7 +44,7 @@ jobs:
           echo "TEST_CASES=$TEST_CASES" >> $GITHUB_OUTPUT
         shell: bash
     outputs:
-      TEST_CASES: ${{ fromJson(steps.variables.outputs.TEST_CASES) }}
+      TEST_CASES: ${{ fromJSON(steps.variables.outputs.TEST_CASES) }}
   run-tests:
     runs-on: ubuntu-latest
     needs:
