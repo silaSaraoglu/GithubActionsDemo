@@ -20,12 +20,9 @@ on:
         type: string
         default: all
     outputs:
-      exit_codes:
+      test_case_results:
         description: "Exit codes for each test"
         value: ${{ toJSON(jobs.run-tests.outputs) }}
-      test_cases:
-        description: "Artifact name for each test"
-        value: ${{ toJson(jobs.init.outputs.str_test_cases_list) }}
 
 jobs:
   init:
@@ -64,9 +61,9 @@ jobs:
         id: run_tests_step
         run: |
           echo "Running integration tests with parameter ${{ matrix.test-cases }}"
-          echo "output_${{ matrix.test-cases }}=${{ matrix.test-cases }}" >> "$GITHUB_OUTPUT"
-      - name: Uploading ${{matrix.test-cases}} artifact
-        id: upload_artifacts
+          echo "exit_code_${{ matrix.test-cases }}=${{ matrix.test-cases }}" >> "$GITHUB_OUTPUT"
+      - name: Create ${{matrix.test-cases}} txt
+        id: create_sample_txt
         run: |
           echo "This is a test file ${{matrix.test-cases}}" > myfile-${{matrix.test-cases}}.txt
           # Loop through each test case and upload the corresponding file
@@ -79,13 +76,16 @@ jobs:
           path: "myfile-${{ matrix.test-cases }}.txt"
 
       - name: Output artifact URL
-        run:  echo 'Artifact URL is ${{ steps.upload_artifact.outputs.artifact-url }}'
-
-
+        run: |
+          echo 'Artifact URL is ${{ steps.upload_artifact.outputs.artifact-url }}'
+          echo "artifact_url_${{ matrix.test-cases }}=${{ steps.upload_artifact.outputs.artifact-url }}" >> "$GITHUB_OUTPUT"
     outputs:
-      output_1: ${{ steps.run_tests_step.outputs.output_option_1 }}
-      output_2: ${{ steps.run_tests_step.outputs.output_option_2 }}
-      output_3: ${{ steps.run_tests_step.outputs.output_option_3 }}
+      exit_code_option_1: ${{ steps.run_tests_step.outputs.exit_code_option_1 }}
+      exit_code_option_2: ${{ steps.run_tests_step.outputs.exit_code_option_2 }}
+      exit_code_option_3: ${{ steps.run_tests_step.outputs.exit_code_option_3 }}
+      artifact_URL_option_1: ${{ steps.run_tests_step.outputs.artifact_url_option_1 }}
+      artifact_URL_option_2: ${{ steps.run_tests_step.outputs.artifact_url_option_2 }}
+      artifact_URL_option_3: ${{ steps.run_tests_step.outputs.artifact_url_option_3 }}
 
   integration-tests-status:
     runs-on: ubuntu-latest
