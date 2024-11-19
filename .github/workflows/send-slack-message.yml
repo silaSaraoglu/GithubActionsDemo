@@ -18,18 +18,4 @@ jobs:
           # Retrieve the string output
           list_str="${{ needs.call-run-integration-tests.outputs.test_cases }}"
           echo "The list_str value is: $list_str"
-
-          # Convert the comma-separated string back into an array (list)
-          IFS=',' read -r -a test_case_list <<< "$list_str"
-          echo "Iterating over test cases:"
-
-          # Iterate over the artifact names and download each one
-          for artifact in "${test_case_list[@]}"; do
-            echo "Downloading artifact: $artifact"
-            # Download each artifact using the download-artifact action
-            - name: Download $artifact
-              uses: actions/download-artifact@v4
-              with:
-                name: artifact-$artifact
-                path: "myfile-$artifact.txt"
-          done
+          
