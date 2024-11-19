@@ -25,23 +25,23 @@ jobs:
     strategy:
       fail-fast: false
       matrix: 
-        test_cases: ['option_1', 'option_2', 'option_3']
+        test_cases: ['option-1', 'option-2', 'option-3']
     steps:
       - name: Send message for option 1
-        if: ${{ matrix.test_cases == 'option_1' }}
+        if: ${{ matrix.test_cases == 'option-1' }}
         run: |
           echo "${{ needs.call-run-integration-tests.outputs.test-case-exit-code-option-1}}"
-          echo "${{ needs.call-run-integration-tests.outputs.test-case-artifact-url-option-1 }}
+          echo "${{ needs.call-run-integration-tests.outputs.test-case-artifact-url-option-1 }}"
       - name: Send message for option 2
         if: ${{ matrix.test_cases == 'option_2' }}
         run: |
           echo "${{ needs.call-run-integration-tests.outputs.test-case-exit-code-option-2}}"
-          echo "${{ needs.call-run-integration-tests.outputs.test-case-artifact-url-option-2 }}
+          echo "${{ needs.call-run-integration-tests.outputs.test-case-artifact-url-option-2 }}"
       - name: Send message for option 3
         if: ${{ matrix.test_cases == 'option_3' }}
         run: |
           echo "${{ needs.call-run-integration-tests.outputs.test-case-exit-code-option-3}}"
-          echo "${{ needs.call-run-integration-tests.outputs.test-case-artifact-url-option-3 }}
+          echo "${{ needs.call-run-integration-tests.outputs.test-case-artifact-url-option-3 }}"
           
 
 
