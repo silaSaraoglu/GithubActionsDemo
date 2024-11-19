@@ -10,9 +10,6 @@ jobs:
   print-outputs:
     runs-on: ubuntu-latest
     needs: call-run-integration-tests
-    strategy:
-      matrix: 
-        test_cases: ['option_1', 'option_2', 'option_3']
     steps:
       - name: Output aggregated test results
         run: |
