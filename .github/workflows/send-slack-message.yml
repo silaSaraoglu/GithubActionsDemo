@@ -20,5 +20,5 @@ jobs:
       - name: Download artifacts
         uses: actions/download-artifact@v4
         with:
-          name: output-${{ needs.call-run-integration-tests.outputs.TEST_CASES }}
+          name: output-${{ needs.call-run-integration-tests.outputs.test_cases }}
           path: output.json

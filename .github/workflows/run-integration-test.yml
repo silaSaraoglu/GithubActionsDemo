@@ -23,6 +23,9 @@ on:
       exit_codes:
         description: "Exit codes for each test"
         value: ${{ toJSON(jobs.run-tests.outputs) }}
+      test_cases:
+        description: "Artifact name for each test"
+        value: ${{ toJSON(jobs.init.outputs) }}
 
 jobs:
   init:
