@@ -28,16 +28,12 @@ jobs:
         test_cases: ["option_1", "option_2", "option_3"]
     steps:
       - name: Send message for each option
-        uses: slackapi/slack-github-action@v2.0.0
-        with:
-          webhook: ${{ secrets.SLACK_WEBHOOK_URL }}
-          webhook-type: incoming-webhook
-          payload: |
-            text: ""
-            blocks:
-            - type: "section"
-            text:
-            type: "mrkdwn"
+        run: |
+          echo "The exit code for ${{matrix.test_cases}} :"
+          echo "${{ needs.call-run-integration-tests.outputs.test-case-exit-code-option-1}}"
+          echo "::set-output name=needs.call-run-integration-tests.outputs.test-case-exit-code-${{ matrix.test_cases }}::$exit_code"
+          echo "$exit_code"
+
 
 
 
