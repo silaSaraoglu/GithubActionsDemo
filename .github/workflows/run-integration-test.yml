@@ -76,16 +76,13 @@ jobs:
         run: |
           echo 'Artifact URL is ${{ steps.upload_artifact.outputs.artifact-url }}'
           echo "artifact_url_${{ matrix.test-cases }}=${{ steps.upload_artifact.outputs.artifact-url }}" >> "$GITHUB_OUTPUT"
-      - name: Concatenate outputs
-        id: concatenate_outputs
-        run: |
-          echo "option_1=${{ steps.run_tests_step.outputs.exit_code_option_1 }}|${{ steps.output_artifacts.outputs.artifact_url_option_1 }}" >> $GITHUB_OUTPUT
-          echo "option_2=${{ steps.run_tests_step.outputs.exit_code_option_2 }}|${{ steps.output_artifacts.outputs.artifact_url_option_2 }}" >> $GITHUB_OUTPUT
-          echo "option_3=${{ steps.run_tests_step.outputs.exit_code_option_3 }}|${{ steps.output_artifacts.outputs.artifact_url_option_3 }}" >> $GITHUB_OUTPUT
     outputs:
-      option_1: ${{ steps.concatenate_outputs.outputs.option_1 }}
-      option_2: ${{ steps.concatenate_outputs.outputs.option_2 }}
-      option_3: ${{ steps.concatenate_outputs.outputs.option_3 }}
+      exit_code_option_1: ${{ steps.run_tests_step.outputs.exit_code_option_1 }}
+      exit_code_option_2: ${{ steps.run_tests_step.outputs.exit_code_option_2 }}
+      exit_code_option_3: ${{ steps.run_tests_step.outputs.exit_code_option_3 }}
+      artifact_url_option_1: ${{ steps.output_artifacts.outputs.artifact_url_option_1 }}
+      artifact_url_option_2: ${{ steps.output_artifacts.outputs.artifact_url_option_2 }}
+      artifact_url_option_3: ${{ steps.output_artifacts.outputs.artifact_url_option_3 }}
 
   integration-tests-status:
     runs-on: ubuntu-latest

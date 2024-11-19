@@ -14,22 +14,3 @@ jobs:
       - name: Output aggregated test results
         run: |
           echo "${{ needs.call-run-integration-tests.outputs.test_case_results }}"
-  get-test-cases:
-    runs-on: ubuntu-latest
-    needs: call-run-integration-tests
-    steps:
-      - id: parse-json
-        run: |
-          echo "test-cases=$(echo '${{ needs.call-run-integration-tests.outputs.test_case_results }}' | jq -r 'test-cases | join(",")')" >> $GITHUB_OUTPUT
-    outputs:
-      test-cases: ${{ steps.parse-json.outputs.test-cases }}
-  send-slack-message:
-    runs-on: ubuntu-latest
-    needs: get-test-cases
-    strategy:
-      matrix:
-        test-case: ${{ fromJson(needs.get-test-cases.outputs.test-cases) }}
-    steps:
-      - name: Handle Option
-        run: |
-          echo "Handling ${{ matrix.test-case }}"
