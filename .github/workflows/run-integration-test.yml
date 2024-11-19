@@ -71,7 +71,7 @@ jobs:
           webhook: ${{ secrets.SLACK_WEBHOOK_URL }}
           webhook-type: incoming-webhook
           payload: |
-            text: "*Test Artifact URL*: ${{ steps.upload_artifact.outputs.artifact-url }} Test Exit Code: ${{ steps.run_tests_step.outcome.exit_code }}" 
+            text: "*Test Artifact URL*: ${{ steps.upload_artifact.outputs.artifact-url }} Test Exit Code: ${{ steps.run_tests_step.outputs.exit_code }}" 
 
 
 
