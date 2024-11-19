@@ -20,7 +20,7 @@ jobs:
     steps:
       - id: parse-json
         run: |
-          echo "test-cases=$(echo '${{ needs.call-run-integration-tests.outputs.test_case_results }}' | jq -r 'keys | join(",")')" >> $GITHUB_OUTPUT
+          echo "test-cases=$(echo '${{ needs.call-run-integration-tests.outputs.test_case_results }}' | jq -r 'test-cases | join(",")')" >> $GITHUB_OUTPUT
     outputs:
       test-cases: ${{ steps.parse-json.outputs.test-cases }}
   send-slack-message:
