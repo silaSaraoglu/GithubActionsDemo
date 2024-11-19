@@ -67,7 +67,7 @@ jobs:
       
       - name: Send slack message
         run: |
-          echo "${{ steps.run_tests_step.outputs}}"
+          echo "${{steps.run_tests_step.outputs}}[exit_code_${{ matrix.test-cases }}]"
 
 
   integration-tests-status:
