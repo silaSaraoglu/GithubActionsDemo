@@ -71,11 +71,15 @@ jobs:
           echo "This is a test file ${{matrix.test-cases}}" > myfile-${{matrix.test-cases}}.txt
           # Loop through each test case and upload the corresponding file
       - name: Upload each file as an artifact
+        id: upload_artifact
         uses: actions/upload-artifact@v4
         with:
           # The name is based on the matrix value, and we are uploading each dynamically created file
           name: "artifact-${{ matrix.test-cases }}"  # Artifact name based on test case
           path: "myfile-${{ matrix.test-cases }}.txt"
+
+      - name: Output artifact URL
+        run:  echo 'Artifact URL is ${{ steps.upload_artifact.outputs.artifact-url }}'
 
 
     outputs:
