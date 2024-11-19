@@ -68,7 +68,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           # The name is based on the matrix value, and we are uploading each dynamically created file
-          name: "artifact-${{ matrix.test-cases }}"  # Artifact name based on test case
+          name: "artifact-${{ matrix.test-cases }}" # Artifact name based on test case
           path: "myfile-${{ matrix.test-cases }}.txt"
 
       - name: Output artifact URL
@@ -77,12 +77,9 @@ jobs:
           echo 'Artifact URL is ${{ steps.upload_artifact.outputs.artifact-url }}'
           echo "artifact_url_${{ matrix.test-cases }}=${{ steps.upload_artifact.outputs.artifact-url }}" >> "$GITHUB_OUTPUT"
     outputs:
-      exit_code_option_1: ${{ steps.run_tests_step.outputs.exit_code_option_1 }}
-      exit_code_option_2: ${{ steps.run_tests_step.outputs.exit_code_option_2 }}
-      exit_code_option_3: ${{ steps.run_tests_step.outputs.exit_code_option_3 }}
-      artifact_url_option_1: ${{ steps.output_artifacts.outputs.artifact_url_option_1 }}
-      artifact_url_option_2: ${{ steps.output_artifacts.outputs.artifact_url_option_2 }}
-      artifact_url_option_3: ${{ steps.output_artifacts.outputs.artifact_url_option_3 }}
+      option_1: "${{ steps.run_tests_step.outputs.exit_code_option_1 }}|${{ steps.output_artifacts.outputs.artifact_url_option_1 }}"
+      option_2: "${{ steps.run_tests_step.outputs.exit_code_option_2 }}|${{ steps.output_artifacts.outputs.artifact_url_option_2 }}"
+      option_3: "${{ steps.run_tests_step.outputs.exit_code_option_3 }}|${{ steps.output_artifacts.outputs.artifact_url_option_3 }}"
 
   integration-tests-status:
     runs-on: ubuntu-latest
