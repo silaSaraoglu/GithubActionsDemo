@@ -39,10 +39,6 @@ jobs:
           fi
           echo "Test cases: $TEST_CASES"
           echo "TEST_CASES=$TEST_CASES" >> $GITHUB_OUTPUT
-          # Convert list to a comma-separated string
-          list_str=$(IFS=,; echo "${TEST_CASES[*]}")
-          # Set as output
-          echo "test_cases_list=${list_str}" >> "$GITHUB_OUTPUT"
 
         shell: bash
     outputs:
