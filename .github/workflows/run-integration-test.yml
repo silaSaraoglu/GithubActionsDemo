@@ -65,6 +65,21 @@ jobs:
         run: |
           echo "Running integration tests with parameter ${{ matrix.test-cases }}"
           echo "output_${{ matrix.test-cases }}=${{ matrix.test-cases }}" >> "$GITHUB_OUTPUT"
+      - name: Uploading ${{matrix.test-cases}} artifact
+        id: upload_artifacts
+        run: |
+          echo "This is a test file ${{matrix.test-cases}}" > myfile-${{matrix.test-cases}}.txt
+          # Loop through each test case and upload the corresponding file
+          for test_case in ${{ matrix.test-cases }}; do
+            echo "Uploading myfile-$test_case.txt as an artifact"
+            # Upload the file created dynamically
+            uses: actions/upload-artifact@v4
+            with:
+              name: "artifact-$test_case"  # Artifact name based on test case
+              path: "myfile-$test_case.txt"  # Path to the dynamically created file
+          done
+
+
     outputs:
       output_1: ${{ steps.run_tests_step.outputs.output_option_1 }}
       output_2: ${{ steps.run_tests_step.outputs.output_option_2 }}

@@ -14,12 +14,24 @@ jobs:
       - name: Output aggregated test results
         run: |
           echo "Test results JSON: ${{ needs.call-run-integration-tests.outputs.exit_codes }}"
-          echo "la la ${{ needs.call-run-integration-tests.outputs.test_cases }}"
-  download-artifacts:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Download artifacts
-        uses: actions/download-artifact@v4
-        with:
-          name: output-${{ needs.call-run-integration-tests.outputs.test_cases }}
-          path: output.json
+          echo "${{ needs.call-run-integration-tests.outputs.test_cases }}"
+          # Retrieve the string output
+          list_str=""${{ needs.call-run-integration-tests.outputs.test_cases }}"
+
+          # Convert the comma-separated string back into an array (list)
+          IFS=',' read -r -a test_case_list <<< "$list_str"
+          echo "Iterating over test cases:"
+          for test_case in "${test_case_list[@]}"; do
+            echo "Test case: $test_case"
+          done
+
+          # Iterate over the artifact names and download each one
+          for artifact in "${test_case_list[@]}"; do
+            echo "Downloading artifact: $artifact"
+            # Download each artifact using the download-artifact action
+            - name: Download $artifact
+              uses: actions/download-artifact@v3
+              with:
+                name: $artifact
+                path: "./$artifact"
+          done
