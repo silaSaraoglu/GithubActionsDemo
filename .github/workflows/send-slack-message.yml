@@ -27,12 +27,22 @@ jobs:
       matrix: 
         test_cases: ["option_1", "option_2", "option_3"]
     steps:
-      - name: Send message for each option
+      - name: Send message for option 1
+        if: ${{ matrix.test_cases == 'option_1' }}
         run: |
-          echo "The exit code for ${{matrix.test_cases}} :"
           echo "${{ needs.call-run-integration-tests.outputs.test-case-exit-code-option-1}}"
-          echo "::set-output name=needs.call-run-integration-tests.outputs.test-case-exit-code-${{ matrix.test_cases }}::$exit_code"
-          echo "$exit_code"
+          echo "${{ needs.call-run-integration-tests.outputs.test-case-artifact-url-option-1 }}
+      - name: Send message for option 1
+        if: ${{ matrix.test_cases == 'option_1' }}
+        run: |
+          echo "${{ needs.call-run-integration-tests.outputs.test-case-exit-code-option-2}}"
+          echo "${{ needs.call-run-integration-tests.outputs.test-case-artifact-url-option-2 }}
+      - name: Send message for option 1
+        if: ${{ matrix.test_cases == 'option_1' }}
+        run: |
+          echo "${{ needs.call-run-integration-tests.outputs.test-case-exit-code-option-3}}"
+          echo "${{ needs.call-run-integration-tests.outputs.test-case-artifact-url-option-3 }}
+          
 
 
 
