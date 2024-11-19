@@ -68,6 +68,7 @@ jobs:
       - name: Send slack message
         run: |
           echo  "${{ toJSON(steps.run_tests_step.outputs) }}"
+          echo  "${{ toJSON(steps.output_artifacts.outputs) }}"
 
 
   integration-tests-status:
