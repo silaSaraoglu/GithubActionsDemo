@@ -37,3 +37,16 @@ jobs:
           for test_case in "${test_case_list[@]}"; do
             echo "$test_case"
           done
+
+          for test_case in "${test_case_list[@]}"; do
+          echo "Downloading artifact for test case: $test_case"
+      
+          # Call the download-artifact action for each test case
+          - name: Download artifact for $test_case
+            uses: actions/download-artifact@v3
+            with:
+              name: "artifact-$test_case"  # Artifact name dynamically based on test case
+              path: "myfile-$test_case"  # Path to save the artifact for the specific test case
+          done
+
+
