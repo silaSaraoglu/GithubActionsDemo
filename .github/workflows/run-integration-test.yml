@@ -72,6 +72,7 @@ jobs:
           path: "myfile-${{ matrix.test-cases }}.txt"
 
       - name: Output artifact URL
+        id: output_artifacts
         run: |
           echo 'Artifact URL is ${{ steps.upload_artifact.outputs.artifact-url }}'
           echo "artifact_url_${{ matrix.test-cases }}=${{ steps.upload_artifact.outputs.artifact-url }}" >> "$GITHUB_OUTPUT"
@@ -79,9 +80,9 @@ jobs:
       exit_code_option_1: ${{ steps.run_tests_step.outputs.exit_code_option_1 }}
       exit_code_option_2: ${{ steps.run_tests_step.outputs.exit_code_option_2 }}
       exit_code_option_3: ${{ steps.run_tests_step.outputs.exit_code_option_3 }}
-      artifact_URL_option_1: ${{ steps.run_tests_step.outputs.artifact_url_option_1 }}
-      artifact_URL_option_2: ${{ steps.run_tests_step.outputs.artifact_url_option_2 }}
-      artifact_URL_option_3: ${{ steps.run_tests_step.outputs.artifact_url_option_3 }}
+      artifact_url_option_1: ${{ steps.output_artifacts.outputs.artifact_url_option_1 }}
+      artifact_url_option_2: ${{ steps.output_artifacts.outputs.artifact_url_option_2 }}
+      artifact_url_option_3: ${{ steps.output_artifacts.outputs.artifact_url_option_3 }}
 
   integration-tests-status:
     runs-on: ubuntu-latest
