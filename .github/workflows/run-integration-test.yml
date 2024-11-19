@@ -74,7 +74,7 @@ jobs:
             { "blocks": 
               [ 
                 { "type":"section", 
-                  "text":{ ${{ fromJson(steps.upload_artifact.outputs.artifact-url) }} }
+                  "text":{ This is the artifact url to upload ${{ fromJson(steps.upload_artifact.outputs.artifact-url) }} }
                 }
               ]
             }
