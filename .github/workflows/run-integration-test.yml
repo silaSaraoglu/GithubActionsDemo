@@ -71,13 +71,8 @@ jobs:
           webhook: ${{ secrets.SLACK_WEBHOOK_URL }}
           webhook-type: incoming-webhook
           payload: |
-            { "blocks": 
-              [ 
-                { "type":"section", 
-                  "text":{ This is the artifact url to upload ${{ fromJson(steps.upload_artifact.outputs.artifact-url) }} }
-                }
-              ]
-            }
+            text: "*Test Artifact URL*: ${{ steps.upload_artifact.outputs.artifact-url }}"
+
 
 
   integration-tests-status:
