@@ -25,7 +25,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix: 
-        test_cases: ["option_1", "option_2", "option_3"]
+        test_cases: ['option_1', 'option_2', 'option_3']
     steps:
       - name: Send message for option 1
         if: ${{ matrix.test_cases == 'option_1' }}
