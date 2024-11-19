@@ -21,9 +21,6 @@ jobs:
           # Convert the comma-separated string back into an array (list)
           IFS=',' read -r -a test_case_list <<< "$list_str"
           echo "Iterating over test cases:"
-          for test_case in "${test_case_list[@]}"; do
-            echo "Test case: $test_case"
-          done
 
           # Iterate over the artifact names and download each one
           for artifact in "${test_case_list[@]}"; do
