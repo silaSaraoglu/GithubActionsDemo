@@ -17,24 +17,16 @@ jobs:
         run: |
           echo "Test results JSON: ${{ needs.call-run-integration-tests.outputs.exit_codes }}"
           list_str="$TEST_CASES"
+          test_case_list=$(echo "$list_str" | jq -r '.[]')
+
           # Check if list_str is empty
-          if [ -z "$list_str" ]; then
-            echo "Error: The list_str is empty!"
+          if [ -z "$test_case_list" ]; then
+            echo "Error: The test_case_list is empty!"
             exit 1
           fi
 
-          # Clean up any leading/trailing whitespace (optional)
-          cleaned_list_str=$(echo "$list_str" | tr -s '[:space:]' ',')  # Replace spaces with commas
-    
-          # Debugging: Show the cleaned list
-          echo "Cleaned list: '$cleaned_list_str'"
-
-          # Convert the cleaned comma-separated string into an array (list)
-          IFS=',' read -r -a test_case_list <<< "$cleaned_list_str"
-
-          # Debugging: Show the array length and elements
-          echo "Array length: ${#test_case_list[@]}"
+          # Debugging: Show the converted list
           echo "Converted list:"
-          for test_case in "${test_case_list[@]}"; do
+          for test_case in $test_case_list; do
             echo "$test_case"
           done
