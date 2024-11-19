@@ -14,5 +14,18 @@ jobs:
       - name: Output aggregated test results
         run: |
           echo "${{ needs.call-run-integration-tests.outputs.test_case_results }}"
+  send-slack-message:
+    runs-on: ubuntu-latest
+    needs: call-run-integration-tests
+    strategy:
+      fail-fast: false
+      matrix:
+        test-cases: ${{ fromJSON(needs.call-run-integration-tests.outputs.test_case_results) }}
+    steps:
+      - name: Print results
+        run: |
+          echo "${{ matrix.test-cases }}"
+
+    
 
 
