@@ -15,4 +15,7 @@ jobs:
         run: |
           echo "Test results JSON: ${{ needs.call-run-integration-tests.outputs.exit_codes }}"
           echo "${{ needs.call-run-integration-tests.outputs.test_cases }}"
-          
+          list_str="${{ needs.call-run-integration-tests.outputs.test_cases }}"
+    
+          # Debugging: Print the raw string to verify
+          echo "Raw string: '$list_str'"
