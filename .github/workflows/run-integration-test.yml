@@ -25,7 +25,7 @@ on:
         value: ${{ toJSON(jobs.run-tests.outputs) }}
       test_cases:
         description: "Artifact name for each test"
-        value: ${{ toJson(jobs.init.outputs.TEST_CASES) }}
+        value: ${{ toJson(jobs.init.outputs.str_test_cases_list) }}
 
 jobs:
   init:
@@ -46,7 +46,6 @@ jobs:
           list_str=$(IFS=,; echo "${TEST_CASES[*]}")
           # Set as output
           echo "test_cases_list=${list_str}" >> "$GITHUB_OUTPUT"
-          echo "la la la la 1 ${test_cases_list}"
 
         shell: bash
     outputs:
