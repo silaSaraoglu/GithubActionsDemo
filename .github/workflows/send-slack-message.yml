@@ -19,7 +19,7 @@ jobs:
           echo "${{ needs.call-run-integration-tests.outputs.test-case-artifact-url-option-1 }}"
           echo "${{ needs.call-run-integration-tests.outputs.test-case-artifact-url-option-2 }}"
           echo "${{ needs.call-run-integration-tests.outputs.test-case-artifact-url-option-3 }}"
-  send-slack-message:
+  set-outputs:
     runs-on: ubuntu-latest
     needs: call-run-integration-tests
     strategy:
@@ -28,17 +28,25 @@ jobs:
         test_cases: ['option-1', 'option-2', 'option-3']
     steps:
       - name: Set outputs
+        id: variables
         run: |
           echo "Setting outputs"
           if [ "${{ matrix.test_cases }}" == "option-1" ]; then
-            EXIT_CODE = "${{ needs.call-run-integration-tests.outputs.test-case-exit-code-option-1}}"
-            ARTIFACT_URL = "${{ needs.call-run-integration-tests.outputs.test-case-artifact-url-option-1 }}"
-          else
-            EXIT_CODE = 0
-            ARTIFACT_URL = 0
+            echo "EXIT_CODE='${{ needs.call-run-integration-tests.outputs.test-case-exit-code-option-1}}'" >> $GITHUB_OUTPUT
+            echo "ARTIFACT_URL='${{ needs.call-run-integration-tests.outputs.test-case-artifact-url-option-1 }}'" >> $GITHUB_OUTPUT
+          elif [ "${{ matrix.test_cases }}" == "option-2" ]; then
+            echo "EXIT_CODE='${{ needs.call-run-integration-tests.outputs.test-case-exit-code-option-2}}'" >> $GITHUB_OUTPUT
+            echo "ARTIFACT_URL='${{ needs.call-run-integration-tests.outputs.test-case-artifact-url-option-2 }}'" >> $GITHUB_OUTPUT
+          elif [ "${{ matrix.test_cases }}" == "option-3" ]; then
+            echo "EXIT_CODE='${{ needs.call-run-integration-tests.outputs.test-case-exit-code-option-3}}'" >> $GITHUB_OUTPUT
+            echo "ARTIFACT_URL='${{ needs.call-run-integration-tests.outputs.test-case-artifact-url-option-3 }}'" >> $GITHUB_OUTPUT
           fi
-      - name: Printing exit code and artifact url
-        run: echo $EXIT_CODE
+      - name: Send slack message
+        run: |
+          echo ${{ steps.variables.EXIT_CODE }}
+
+
+
 
       
           
