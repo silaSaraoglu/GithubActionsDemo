@@ -71,7 +71,13 @@ jobs:
           webhook: ${{ secrets.SLACK_WEBHOOK_URL }}
           webhook-type: incoming-webhook
           payload: |
-            text: "Test Exit Code: ${{toJSON(steps.run_tests_step.outputs) }} Artifact URL: ${{ toJSON(steps.output_artifacts.outputs) }}"
+            { "blocks": 
+              [ 
+                { "type":"section", 
+                  "text":{ ${{ fromJson(steps.upload_artifact.outputs.artifact-url) }} }
+                }
+              ]
+            }
 
 
   integration-tests-status:
