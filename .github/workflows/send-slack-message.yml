@@ -13,6 +13,6 @@ jobs:
     steps:
       - name: Output aggregated test results
         run: |
-          echo ${{ needs.call-run-integration-tests.outputs.test_case_results }}
+          echo "${{ needs.call-run-integration-tests.outputs.test_case_results }}"
 
 
