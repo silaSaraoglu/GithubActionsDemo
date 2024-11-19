@@ -27,21 +27,30 @@ jobs:
       matrix: 
         test_cases: ['option-1', 'option-2', 'option-3']
     steps:
-      - name: Send message for option 1
+      - name: Set output for option 1
         if: ${{ matrix.test_cases == 'option-1' }}
         run: |
-          echo "${{ needs.call-run-integration-tests.outputs.test-case-exit-code-option-1}}"
-          echo "${{ needs.call-run-integration-tests.outputs.test-case-artifact-url-option-1 }}"
-      - name: Send message for option 2
+          echo "$exit_code=${{ needs.call-run-integration-tests.outputs.test-case-exit-code-option-1}}"
+          echo "$artifact_url=${{ needs.call-run-integration-tests.outputs.test-case-artifact-url-option-1 }}"
+      - name: Set output for option 2
         if: ${{ matrix.test_cases == 'option-2' }}
         run: |
-          echo "${{ needs.call-run-integration-tests.outputs.test-case-exit-code-option-2}}"
-          echo "${{ needs.call-run-integration-tests.outputs.test-case-artifact-url-option-2 }}"
-      - name: Send message for option 3
+          echo "$exit_code=${{ needs.call-run-integration-tests.outputs.test-case-exit-code-option-2}}"
+          echo "$artifact_url=${{ needs.call-run-integration-tests.outputs.test-case-artifact-url-option-2 }}"
+      - name: Set output for option 3
         if: ${{ matrix.test_cases == 'option-3' }}
         run: |
-          echo "${{ needs.call-run-integration-tests.outputs.test-case-exit-code-option-3}}"
-          echo "${{ needs.call-run-integration-tests.outputs.test-case-artifact-url-option-3 }}"
+          echo "$exit_code=${{ needs.call-run-integration-tests.outputs.test-case-exit-code-option-3}}"
+          echo "$artifact_url=${{ needs.call-run-integration-tests.outputs.test-case-artifact-url-option-3 }}"
+      - name: Send message
+        uses: slackapi/slack-github-action@v2.0.0
+        with:
+          webhook: ${{ secrets.SLACK_WEBHOOK_URL }}
+          webhook-type: incoming-webhook
+          payload: |
+            text: "Exit code: $exit_code and Artifact url: $artifact_url"
+
+      
           
 
 
