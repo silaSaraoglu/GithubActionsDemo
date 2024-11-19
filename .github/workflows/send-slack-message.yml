@@ -30,8 +30,8 @@ jobs:
             echo "Downloading artifact: $artifact"
             # Download each artifact using the download-artifact action
             - name: Download $artifact
-              uses: actions/download-artifact@v3
+              uses: actions/download-artifact@v4
               with:
-                name: $artifact
-                path: "./$artifact"
+                name: artifact-$artifact
+                path: "myfile-$artifact.txt"
           done
