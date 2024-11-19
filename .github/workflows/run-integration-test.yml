@@ -1,5 +1,6 @@
 name: run-integration-tests
 on:
+  # cron logic to be implemented
   workflow_dispatch:
     inputs:
       test-case:
@@ -12,33 +13,6 @@ on:
           - option_1
           - option_2
           - option_3
-  workflow_call:
-    inputs:
-      test-case:
-        description: Test case to run for
-        required: false
-        type: string
-        default: all
-    outputs:
-      test-case-exit-code-option-1:
-        description: "Exit codes for option 1"
-        value: ${{ jobs.run-tests.outputs.exit_code_option_1 }}
-      test-case-exit-code-option-2:
-        description: "Exit codes for option 2"
-        value: ${{ jobs.run-tests.outputs.exit_code_option_2 }}
-      test-case-exit-code-option-3:
-        description: "Exit codes for option 3"
-        value: ${{ jobs.run-tests.outputs.exit_code_option_2 }}
-      test-case-artifact-url-option-1:
-        description: "Artifact URL for option 1"
-        value: ${{ jobs.run-tests.outputs.artifact_url_option_1 }}
-      test-case-artifact-url-option-2:
-        description: "Artifact URL for option 2 "
-        value: ${{ jobs.run-tests.outputs.artifact_url_option_2 }}
-      test-case-artifact-url-option-3:
-        description: "Artifact URL for option 3"
-        value: ${{ jobs.run-tests.outputs.artifact_url_option_3 }}
-
 jobs:
   init:
     runs-on: ubuntu-latest
@@ -90,13 +64,11 @@ jobs:
         run: |
           echo 'Artifact URL is ${{ steps.upload_artifact.outputs.artifact-url }}'
           echo "artifact_url_${{ matrix.test-cases }}=${{ steps.upload_artifact.outputs.artifact-url }}" >> "$GITHUB_OUTPUT"
-    outputs:
-      exit_code_option_1: ${{ steps.run_tests_step.outputs.exit_code_option_1 }}
-      exit_code_option_2: ${{ steps.run_tests_step.outputs.exit_code_option_2 }}
-      exit_code_option_3: ${{ steps.run_tests_step.outputs.exit_code_option_3 }}
-      artifact_url_option_1: ${{ steps.output_artifacts.outputs.artifact_url_option_1 }}
-      artifact_url_option_2: ${{ steps.output_artifacts.outputs.artifact_url_option_2 }}
-      artifact_url_option_3: ${{ steps.output_artifacts.outputs.artifact_url_option_3 }}
+      
+      - name: Send slack message
+        run: |
+          echo "${{ steps.run_tests_step.outputs}}"
+
 
   integration-tests-status:
     runs-on: ubuntu-latest
