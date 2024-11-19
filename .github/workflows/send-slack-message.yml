@@ -14,7 +14,7 @@ jobs:
       - name: Output aggregated test results
         run: |
           echo "Test results JSON: ${{ needs.call-run-integration-tests.outputs.exit_codes }}"
-          echo "${{ needs.call-run-integration-tests.outputs.test_cases }}"
+          echo "la la ${{ needs.call-run-integration-tests.outputs.test_cases }}"
   download-artifacts:
     runs-on: ubuntu-latest
     steps:
