@@ -31,8 +31,8 @@ jobs:
         run: |
           echo "Setting outputs"
           if [ "${{ matrix.test_cases }}" == "option-1" ]; then
-            EXIT_CODE = '["${{ needs.call-run-integration-tests.outputs.test-case-exit-code-option-1}}"]'
-            ARTIFACT_URL = '["${{ needs.call-run-integration-tests.outputs.test-case-artifact-url-option-1 }}"]'
+            EXIT_CODE = "${{ needs.call-run-integration-tests.outputs.test-case-exit-code-option-1}}"
+            ARTIFACT_URL = "${{ needs.call-run-integration-tests.outputs.test-case-artifact-url-option-1 }}"
           else
             EXIT_CODE = 0
             ARTIFACT_URL = 0
