@@ -31,3 +31,10 @@ jobs:
 
           # Convert the cleaned comma-separated string into an array (list)
           IFS=',' read -r -a test_case_list <<< "$cleaned_list_str"
+
+          # Debugging: Show the array length and elements
+          echo "Array length: ${#test_case_list[@]}"
+          echo "Converted list:"
+          for test_case in "${test_case_list[@]}"; do
+            echo "$test_case"
+          done
