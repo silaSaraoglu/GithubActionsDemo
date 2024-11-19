@@ -16,8 +16,8 @@ jobs:
           echo "Test results JSON: ${{ needs.call-run-integration-tests.outputs.exit_codes }}"
           echo "${{ needs.call-run-integration-tests.outputs.test_cases }}"
           # Retrieve the string output
-          list_str=""${{ needs.call-run-integration-tests.outputs.test_cases }}"
-          echo ${list_str}
+          list_str="${{ needs.call-run-integration-tests.outputs.test_cases }}"
+          echo "The list_str value is: $list_str"
 
           # Convert the comma-separated string back into an array (list)
           IFS=',' read -r -a test_case_list <<< "$list_str"
