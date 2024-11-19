@@ -46,7 +46,6 @@ jobs:
         shell: bash
     outputs:
       TEST_CASES: ${{ steps.variables.outputs.TEST_CASES }}
-      str_test_cases_list: ${{ steps.variables.outputs.test_cases_list }}
   run-tests:
     runs-on: ubuntu-latest
     needs:
