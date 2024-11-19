@@ -12,10 +12,9 @@ jobs:
     needs: call-run-integration-tests
     steps:
       - name: Output aggregated test results
+        env:
+          TEST_CASES: ${{ needs.call-run-integration-tests.outputs.test_cases }}
         run: |
           echo "Test results JSON: ${{ needs.call-run-integration-tests.outputs.exit_codes }}"
-          echo "${{ needs.call-run-integration-tests.outputs.test_cases }}"
-          list_str="${{ needs.call-run-integration-tests.outputs.test_cases }}"
-    
-          # Debugging: Print the raw string to verify
+          list_str="$TEST_CASES"
           echo "Raw string: '$list_str'"
