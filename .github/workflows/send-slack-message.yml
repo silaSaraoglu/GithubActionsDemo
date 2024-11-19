@@ -17,23 +17,15 @@ jobs:
         run: |
           echo "Test results JSON: ${{ needs.call-run-integration-tests.outputs.exit_codes }}"
           list_str="$TEST_CASES"
-          # Clean up the string: Remove the surrounding quotes and escape characters
-          cleaned_list_str=$(echo "$list_str" | sed 's/^"\(.*\)"$/\1/' | sed 's/\\"/"/g')
-    
-          # Debugging: Show the cleaned string
-          echo "Cleaned string: '$cleaned_list_str'"
+          # Step 1: Remove the square brackets and surrounding quotes
+          cleaned_list_str=$(echo "$list_str" | sed 's/^\["\(.*\)"\]$/\1/' | sed 's/\\"/"/g' | tr -d '"')
 
-          # Now split the cleaned list by commas into an array
+          # Step 2: Split the cleaned string into an array by commas
           IFS=',' read -r -a test_case_list <<< "$cleaned_list_str"
 
-          # Check if list_str is empty
-          if [ ${#test_case_list[@]} -eq 0 ]; then
-            echo "Error: The test_case_list is empty!"
-            exit 1
-          fi
-
+          # Step 3: Print the result to verify
           echo "Array length: ${#test_case_list[@]}"
-          echo "Converted list:"
+          echo "Converted array:"
           for test_case in "${test_case_list[@]}"; do
             echo "$test_case"
           done
