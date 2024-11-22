@@ -70,18 +70,17 @@ jobs:
           webhook: ${{ secrets.SLACK_WEBHOOK_URL }}
           webhook-type: incoming-webhook
           payload: |
-            {
-              "text": "${{ steps.run_tests_step.outputs.exit_code }} failed test cases in ${{ matrix.test-cases }}",
+            { 
               "attachments": [
                 {
-                  "text": "${{ matrix.test-cases }} report",
-                  "color": "#3AA3E3",
-                  "attachment_type": "default",
-                  "actions": [
+                  "mrkdwn_in": ["text"],
+                  "color": "#36a64f",
+                  "title": "${{ steps.run_tests_step.outputs.exit_code }} failed test cases in ${{ matrix.test-cases }}",
+                  "fields": [
                     {
                       "url": "${{ steps.upload_artifact.outputs.artifact-url }}",
                       "type": "button",
-                      "text" : " :github:View artifact"
+                      "text" : " :github: View artifact"
                     },
                   ]
                 }
