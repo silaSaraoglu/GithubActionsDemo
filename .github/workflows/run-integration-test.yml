@@ -91,6 +91,7 @@ jobs:
           path: "myfile-${{ matrix.test-cases }}.txt"
       - name: Set dynamic slack message payload
         id: set-payload
+        if: github.event_name == 'schedule'
         run: |  
           if [ "${{ steps.run_tests_step.outputs.exit_code}}" == "0" ]; then
             echo "color=#36a64f" >> "$GITHUB_OUTPUT"
