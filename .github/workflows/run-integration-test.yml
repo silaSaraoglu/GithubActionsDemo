@@ -1,6 +1,7 @@
 name: run-integration-tests
 on:
-  # cron logic to be implemented
+  schedule:
+    - cron: "*/5 * * * *"
   workflow_dispatch:
     inputs:
       test-case:
@@ -72,15 +73,14 @@ jobs:
           webhook-type: incoming-webhook
           payload: |
             {
-              "text": "GitHub Action failed",
+              "text": "Test cases failed",
               "blocks": [
                 {
                   "type": "section",
                   "text": {
                     "type": "mrkdwn",
-                    "text": "${{ steps.run_tests_step.outputs.exit_code }} failed test cases in ${{ matrix.test-cases }} :disappointed:"
-                  }
-                },
+                    "text": "${{ steps.run_tests_step.outputs.exit_code }} failed test cases in ${{ matrix.test-cases }}"
+                  },
                 {
                   "type": "actions",
                   "elements": [
@@ -88,18 +88,15 @@ jobs:
                       "type": "button",
                       "text": {
                         "type": "plain_text",
-                        "text": ":github: Artifact URL"
+                        "text": ":github: Artifact"
                       },
                       "url": "${{steps.upload_artifact.outputs.artifact-url }}"
                     }
                   ]
                 }
+                }
               ]
             }
-
-
-
-
   integration-tests-status:
     runs-on: ubuntu-latest
     needs:
