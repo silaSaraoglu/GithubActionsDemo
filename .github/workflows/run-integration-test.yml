@@ -83,15 +83,17 @@ jobs:
                   }
                 },
                 {
-                  "type": "actions",
-                  "elements": [
+                  "text": "New workflow launched",
+                  "attachments": [
+                  {
+                    "text": "Artifact",
+                    "color": "#3AA3E3",
+                    "attachment_type": "default",
+                    "actions": [
                     {
-                    "type": "button",
-                    "text": {
-                      "type": "plain_text",
-                      "text": ":github: Artifact"
-                    },
-                    "url": "${{ steps.upload_artifact.outputs.artifact-url }}"
+                      "url": "${{ steps.upload_artifact.outputs.artifact-url }}",
+                      "type": "button",
+                      "text" : "View artifact"
                     }
                   ]
                 }
