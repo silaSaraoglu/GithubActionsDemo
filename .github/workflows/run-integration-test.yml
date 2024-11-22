@@ -95,7 +95,7 @@ jobs:
       - name: Set dynamic slack message payload
         id: set-payload
         run: |
-          if [[ "${{ steps.run_tests_step.outputs.exit_code }}" != "0" ]]; then
+          if [ "${{ steps.run_tests_step.outputs.exit_code }}" != "0" ]; then
           echo "payload={
               "attachments": [
                 {
@@ -112,7 +112,6 @@ jobs:
                 }
               ]
             }">> $GITHUB_OUTPUT
-          else
           fi      
       - name: Send slack message
         uses: slackapi/slack-github-action@v2.0.0
