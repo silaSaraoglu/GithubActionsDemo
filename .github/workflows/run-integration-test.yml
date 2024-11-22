@@ -108,7 +108,7 @@ jobs:
             {
               "attachments": [
                 {
-                  "mrkdwn_in": ["text"],
+                  "mrkdwn_in": ["title"],
                   "color": "${{ steps.set-payload.outputs.color }}",
                   "title": "${{ steps.set-payload.outputs.text}}",
                   "actions": [
