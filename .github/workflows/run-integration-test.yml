@@ -79,7 +79,7 @@ jobs:
                   "type": "section",
                   "text": {
                     "type": "mrkdwn",
-                    "text": "option_3 failed test cases in option_3"
+                    "text": "${{ steps.run_tests_step.outputs.exit_code }} failed test cases in ${{ matrix.test-cases }}"
                   }
                 },
                 {
@@ -91,7 +91,7 @@ jobs:
                       "type": "plain_text",
                       "text": ":github: Artifact"
                     },
-                    "url": "https://github.com/silaSaraoglu/GithubActionsDemo/actions/runs/11969672062/artifacts/2223309901"
+                    "url": "${{ steps.upload_artifact.outputs.artifact-url }}"
                     }
                   ]
                 }
