@@ -112,7 +112,7 @@ jobs:
               "attachments": [
                 {
                   "mrkdwn_in": ["text"],
-                  "color": ${{ steps.set-payload.outputs.color }},
+                  "color": "${{ steps.set-payload.outputs.color }}",
                   "title": "${{ steps.set-payload.outputs.text}}",
                   "actions": [
                     {
