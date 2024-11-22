@@ -1,7 +1,7 @@
 name: run-integration-tests
 on:
   schedule:
-    - cron: "*/40 * * * *"
+    - cron: "*/5 * * * *"
   workflow_dispatch:
     inputs:
       test-case:
@@ -14,6 +14,18 @@ on:
           - option_1
           - option_2
           - option_3
+      tags:
+        description: tags
+        required: false
+        type: string
+      import:
+        description: 'import'
+        required: false
+        type: boolean
+      test-plan:
+        description: 'test-plan'
+        required: false
+        type: string
 jobs:
   init:
     runs-on: ubuntu-latest
@@ -24,11 +36,26 @@ jobs:
           echo "Executing integration tests"
           if [ "${{ inputs.test-case }}" == "all" ]; then
             TEST_CASES='["option_1", "option_2", "option_3"]'
+          elif [ "${{ inputs.test-case }}" == "" ]; then
+            TEST_CASES='["option_1", "option_2", "option_3"]'
           else
             TEST_CASES='["${{ inputs.test-case }}"]'
           fi
           echo "Test cases: $TEST_CASES"
           echo "TEST_CASES=$TEST_CASES" >> $GITHUB_OUTPUT
+          TEST_TAGS="${{ github.event.inputs.tags }}"
+
+          if [ -z "$TEST_TAGS" &&  ${{ github.event_name }} == "workflow_dispatch" ]; then
+            echo "Error: TEST_TAGS is empty - select a tag or all to run all the tests"
+            exit 1
+          fi
+
+          if [ "$TEST_TAGS" == "all"]; then
+            TEST_TAGS=""
+          fi
+
+          echo "Test tags: $TEST_TAGS"
+          echo "TEST_TAGS=$TEST_TAGS" >> $GITHUB_OUTPUT
         shell: bash
     outputs:
       TEST_CASES: ${{ steps.variables.outputs.TEST_CASES }}
@@ -66,6 +93,7 @@ jobs:
           echo "artifact_url_${{ matrix.test-cases }}=${{ steps.upload_artifact.outputs.artifact-url }}" >> "$GITHUB_OUTPUT"
       
       - name: Send slack message
+        if: ${{ github.event_name }} == "schedule"
         uses: slackapi/slack-github-action@v2.0.0
         with:
           webhook: ${{ secrets.SLACK_WEBHOOK_URL }}
