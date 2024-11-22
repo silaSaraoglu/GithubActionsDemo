@@ -101,6 +101,7 @@ jobs:
           else
             echo "color=#e64f36" >> "$GITHUB_OUTPUT"
             echo "text= There are  ${{ steps.run_tests_step.outputs.exit_code }} failing test cases in${{ matrix.test-cases }} :x:" >> "$GITHUB_OUTPUT"
+          fi
       - name: Send slack message
         uses: slackapi/slack-github-action@v2.0.0
         with:
