@@ -76,7 +76,7 @@ jobs:
                   "mrkdwn_in": ["text"],
                   "color": "#36a64f",
                   "title": "${{ steps.run_tests_step.outputs.exit_code }} failed test cases in ${{ matrix.test-cases }}",
-                  "fields": [
+                  "actions": [
                     {
                       "url": "${{ steps.upload_artifact.outputs.artifact-url }}",
                       "type": "button",
