@@ -93,7 +93,7 @@ jobs:
           echo "artifact_url_${{ matrix.test-cases }}=${{ steps.upload_artifact.outputs.artifact-url }}" >> "$GITHUB_OUTPUT"
       
       - name: Send slack message
-        if: ${{ github.event_name }} == "schedule"
+        if:  github.event_name == 'schedule'
         uses: slackapi/slack-github-action@v2.0.0
         with:
           webhook: ${{ secrets.SLACK_WEBHOOK_URL }}
