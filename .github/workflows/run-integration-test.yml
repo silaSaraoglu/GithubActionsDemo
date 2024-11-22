@@ -92,15 +92,12 @@ jobs:
         run: |
           echo 'Artifact URL is ${{ steps.upload_artifact.outputs.artifact-url }}'
           echo "artifact_url_${{ matrix.test-cases }}=${{ steps.upload_artifact.outputs.artifact-url }}" >> "$GITHUB_OUTPUT"
-      
-      - name: Send slack message
-        if:  github.event_name == 'schedule'
-        uses: slackapi/slack-github-action@v2.0.0
-        with:
-          webhook: ${{ secrets.SLACK_WEBHOOK_URL }}
-          webhook-type: incoming-webhook
-          payload: |
-            {
+      - name: Set dynamic slack message payload
+        id: set-payload
+        if: github.event_name == 'schedule'
+        run: |
+          if [[ "${{ steps.run_tests_step.outputs.exit_code }}" != "0" ]]; then
+          echo "payload={
               "attachments": [
                 {
                   "mrkdwn_in": ["text"],
@@ -115,7 +112,16 @@ jobs:
                   ]
                 }
               ]
-            }
+            }">> $GITHUB_OUTPUT
+          else
+          fi      
+      - name: Send slack message
+        if:  github.event_name == 'schedule'
+        uses: slackapi/slack-github-action@v2.0.0
+        with:
+          webhook: ${{ secrets.SLACK_WEBHOOK_URL }}
+          webhook-type: incoming-webhook
+          payload: ${{ steps.set-payload.outputs.payload }}
 
   integration-tests-status:
     runs-on: ubuntu-latest
