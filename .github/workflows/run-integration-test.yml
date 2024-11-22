@@ -97,21 +97,21 @@ jobs:
         run: |
           if [ "${{ steps.run_tests_step.outputs.exit_code }}" != "0" ]; then
           echo "payload={
-              "attachments": [
+              \"attachments\": [
+              {
+                \"mrkdwn_in\": [\"text\"],
+                \"color\": \"#e64f36\",
+                \"title\": \"${{ steps.run_tests_step.outputs.exit_code }} failed test cases in ${{ matrix.test-cases }}\",
+                \"actions\": [
                 {
-                  "mrkdwn_in": ["text"],
-                  "color": "#e64f36",
-                  "title": "${{ steps.run_tests_step.outputs.exit_code }} failed test cases in ${{ matrix.test-cases }}",
-                  "actions": [
-                    {
-                      "url": "${{ steps.upload_artifact.outputs.artifact-url }}",
-                      "type": "button",
-                      "text" : " :github: View artifact"
-                    },
-                  ]
+                  \"url\": \"${{ steps.upload_artifact.outputs.artifact-url }}\",
+                  \"type\": \"button\",
+                  \"text\": \" :github: View artifact\"
                 }
               ]
-            }">> $GITHUB_OUTPUT
+            }
+          ]}" >> $GITHUB_OUTPUT
+
           fi      
       - name: Send slack message
         uses: slackapi/slack-github-action@v2.0.0
