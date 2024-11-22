@@ -81,7 +81,7 @@ jobs:
                     {
                       "url": "${{ steps.upload_artifact.outputs.artifact-url }}",
                       "type": "button",
-                      "text" : "View artifact"
+                      "text" : " :github:View artifact"
                     },
                   ]
                 }
