@@ -94,31 +94,35 @@ jobs:
           echo "artifact_url_${{ matrix.test-cases }}=${{ steps.upload_artifact.outputs.artifact-url }}" >> "$GITHUB_OUTPUT"
       - name: Set dynamic slack message payload
         id: set-payload
-        run: |
-          if [ "${{ steps.run_tests_step.outputs.exit_code }}" != "0" ]; then
-          echo "payload={
-              \"attachments\": [
-              {
-                \"mrkdwn_in\": [\"text\"],
-                \"color\": \"#e64f36\",
-                \"title\": \"${{ steps.run_tests_step.outputs.exit_code }} failed test cases in ${{ matrix.test-cases }}\",
-                \"actions\": [
-                {
-                  \"url\": \"${{ steps.upload_artifact.outputs.artifact-url }}\",
-                  \"type\": \"button\",
-                  \"text\": \" :github: View artifact\"
-                }
-              ]
-            }
-          ]}" >> $GITHUB_OUTPUT
-
-          fi      
+        run: |  
+          if [ "${{ steps.run_tests_step.outputs.exit_code}}" == "0" ]; then
+            echo "color=#36a64f" >> "$GITHUB_OUTPUT"
+            echo "text= There are no test cases failing in ${{ matrix.test-cases }} :white_check_mark:" >> "$GITHUB_OUTPUT"
+          else
+            echo "color=#e64f36" >> "$GITHUB_OUTPUT"
+            echo "text= There are  ${{ steps.run_tests_step.outputs.exit_code }} failing test cases in${{ matrix.test-cases }} :x:" >> "$GITHUB_OUTPUT"
       - name: Send slack message
         uses: slackapi/slack-github-action@v2.0.0
         with:
           webhook: ${{ secrets.SLACK_WEBHOOK_URL }}
           webhook-type: incoming-webhook
-          payload: ${{ steps.set-payload.outputs.payload }}
+          payload: |
+            {
+              "attachments": [
+                {
+                  "mrkdwn_in": ["text"],
+                  "color": ${{ steps.set-payload.outputs.color }},
+                  "title": "${{ steps.set-payload.outputs.text}}",
+                  "actions": [
+                    {
+                      "url": "${{ steps.upload_artifact.outputs.artifact-url }}",
+                      "type": "button",
+                      "text" : ":github: View logs"
+                    },
+                  ]
+                }
+              ]
+            }
 
   integration-tests-status:
     runs-on: ubuntu-latest
