@@ -1,7 +1,7 @@
 name: run-integration-tests
 on:
   schedule:
-    - cron: "*/5 * * * *"
+    - cron: "*/15 * * * *"
   workflow_dispatch:
     inputs:
       test-case:
@@ -35,7 +35,7 @@ jobs:
         run: |
           echo "Executing integration tests"
           if [ "${{ inputs.test-case }}" == "all" ]; then
-            TEST_CASES='["0", "1", "2"]'
+            TEST_CASES='["option_1", "option_2", "option_3"]'
           elif [ "${{ inputs.test-case }}" == "" ]; then
             TEST_CASES='["option_1", "option_2", "option_3"]'
           else
@@ -56,6 +56,9 @@ jobs:
 
           echo "Test tags: $TEST_TAGS"
           echo "Test cases: $TEST_CASES"
+          echo "${{ github.event.inputs.import }}"
+          echo "${{ github.event.inputs.test }}"
+
           echo "TEST_TAGS=$TEST_TAGS" >> $GITHUB_OUTPUT
         shell: bash
     outputs:
@@ -86,9 +89,9 @@ jobs:
           # The name is based on the matrix value, and we are uploading each dynamically created file
           name: "artifact-${{ matrix.test-cases }}" # Artifact name based on test case
           path: "myfile-${{ matrix.test-cases }}.txt"
-
       - name: Output artifact URL
         id: output_artifacts
+        if: github.event_name == 'schedule'
         run: |
           echo 'Artifact URL is ${{ steps.upload_artifact.outputs.artifact-url }}'
           echo "artifact_url_${{ matrix.test-cases }}=${{ steps.upload_artifact.outputs.artifact-url }}" >> "$GITHUB_OUTPUT"
@@ -104,6 +107,7 @@ jobs:
           fi
       - name: Send slack message
         uses: slackapi/slack-github-action@v2.0.0
+        if: github.event_name == 'schedule'
         with:
           webhook: ${{ secrets.SLACK_WEBHOOK_URL }}
           webhook-type: incoming-webhook
