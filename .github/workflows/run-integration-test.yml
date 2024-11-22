@@ -1,7 +1,7 @@
 name: run-integration-tests
 on:
   schedule:
-    - cron: "*/15 * * * *"
+    - cron: "0 9 * * *"
   workflow_dispatch:
     inputs:
       test-case:
@@ -91,18 +91,16 @@ jobs:
           path: "myfile-${{ matrix.test-cases }}.txt"
       - name: Set dynamic slack message payload
         id: set-payload
-        if: github.event_name == 'schedule'
         run: |  
           if [ "${{ steps.run_tests_step.outputs.exit_code}}" == "0" ]; then
             echo "color=#36a64f" >> "$GITHUB_OUTPUT"
             echo "text= There are no test cases failing in ${{ matrix.test-cases }} :white_check_mark:" >> "$GITHUB_OUTPUT"
           else
             echo "color=#e64f36" >> "$GITHUB_OUTPUT"
-            echo "text= There are  ${{ steps.run_tests_step.outputs.exit_code }} failing tests in ${{ matrix.test-cases }} :x:" >> "$GITHUB_OUTPUT"
+            echo "text= There are *${{ steps.run_tests_step.outputs.exit_code }}* failing tests in ${{ matrix.test-cases }} :x:" >> "$GITHUB_OUTPUT"
           fi
       - name: Send slack message
         uses: slackapi/slack-github-action@v2.0.0
-        if: github.event_name == 'schedule'
         with:
           webhook: ${{ secrets.SLACK_WEBHOOK_URL }}
           webhook-type: incoming-webhook
@@ -117,7 +115,7 @@ jobs:
                     {
                       "url": "${{ steps.upload_artifact.outputs.artifact-url }}",
                       "type": "button",
-                      "text" : ":github: View logs"
+                      "text" : "View logs"
                     },
                   ]
                 }
