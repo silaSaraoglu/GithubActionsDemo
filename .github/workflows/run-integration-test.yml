@@ -55,6 +55,7 @@ jobs:
           fi
 
           echo "Test tags: $TEST_TAGS"
+          echo "Test cases: $TEST_CASES"
           echo "TEST_TAGS=$TEST_TAGS" >> $GITHUB_OUTPUT
         shell: bash
     outputs:
