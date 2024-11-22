@@ -73,37 +73,22 @@ jobs:
           webhook-type: incoming-webhook
           payload: |
             {
-            "text": "Test cases failed",
-            "blocks": [
-              {
-                "type": "section",
-                "text": {
-                  "type": "mrkdwn",
-                  "text": "${{ steps.run_tests_step.outputs.exit_code }} failed test cases in ${{ matrix.test-cases }}"
-                }
-              },
-              {
-                "type": "section",
-                "text": {
-                  "type": "mrkdwn",
-                  "text": "New workflow launched"
-                },
-                "attachments": [
+              "text": "New workflow launched",
+              "attachments": [
                 {
-                  "text": "Artifact",
+                  "text": "Artifacr",
                   "color": "#3AA3E3",
                   "attachment_type": "default",
                   "actions": [
                     {
                       "url": "${{ steps.upload_artifact.outputs.artifact-url }}",
                       "type": "button",
-                      "text": "View artifact"
-                    }
+                      "text" : "View artifact"
+                    },
                   ]
                 }
-            ]
+              ]
             }
-
 
   integration-tests-status:
     runs-on: ubuntu-latest
