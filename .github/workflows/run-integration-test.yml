@@ -93,11 +93,11 @@ jobs:
         id: set-payload
         run: |  
           if [ "${{ steps.run_tests_step.outputs.exit_code}}" == "0" ]; then
-            echo "color=#36a64f" >> "$GITHUB_OUTPUT"
+            echo "color=green" >> "$GITHUB_OUTPUT"
             echo "text= There are no test cases failing in ${{ matrix.test-cases }} :white_check_mark:" >> "$GITHUB_OUTPUT"
           else
-            echo "color=#e64f36" >> "$GITHUB_OUTPUT"
-            echo "text= There are *${{ steps.run_tests_step.outputs.exit_code }}* failing tests in ${{ matrix.test-cases }} :x:" >> "$GITHUB_OUTPUT"
+            echo "color=red" >> "$GITHUB_OUTPUT"
+            echo "text= There are *${{ steps.run_tests_step.outputs.exit_code }}* failing tests in ${{ matrix.test-cases }}" >> "$GITHUB_OUTPUT"
           fi
       - name: Send slack message
         uses: slackapi/slack-github-action@v2.0.0
