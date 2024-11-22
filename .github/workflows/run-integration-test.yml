@@ -71,7 +71,32 @@ jobs:
           webhook: ${{ secrets.SLACK_WEBHOOK_URL }}
           webhook-type: incoming-webhook
           payload: |
-            text: "*Test Artifact URL*: ${{ steps.upload_artifact.outputs.artifact-url }} Test Exit Code: ${{ steps.run_tests_step.outputs.exit_code }}" 
+            {
+              "text": "GitHub Action failed",
+              "blocks": [
+                {
+                  "type": "section",
+                  "text": {
+                    "type": "mrkdwn",
+                    "text": "${{ steps.run_tests_step.outputs.exit_code }} failed test cases in ${{ matrix.test-cases }} :disappointed:"
+                  }
+                },
+                {
+                  "type": "actions",
+                  "elements": [
+                    {
+                      "type": "button",
+                      "text": {
+                        "type": "plain_text",
+                        "text": ":github: Artifact URL"
+                      },
+                      "url": "${{steps.upload_artifact.outputs.artifact-url }}"
+                    }
+                  ]
+                }
+              ]
+            }
+
 
 
 
