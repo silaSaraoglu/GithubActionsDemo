@@ -24,8 +24,7 @@ jobs:
           echo "Executing integration tests"
           if [ "${{ inputs.test-case }}" == "all" ]; then
             TEST_CASES='["option_1", "option_2", "option_3"]'
-          elif
-            [ "${{ inputs.test-case }}" == "" ]; then
+          elif [ "${{ inputs.test-case }}" == "" ]; then
             TEST_CASES='["option_1", "option_2", "option_3"]
           else
             TEST_CASES='["${{ inputs.test-case }}"]'
