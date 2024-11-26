@@ -77,10 +77,10 @@ jobs:
         run: |
           echo "Running integration tests with parameter ${{ matrix.test-cases }}"
           echo "exit_code=${{ matrix.test-cases }}" >> "$GITHUB_OUTPUT"
+        shell: bash
       - name: Run Makefile
         id: run_make
         run: |
-            set +e 
             make exit_with_code
       - name: Create ${{matrix.test-cases}} txt
         id: create_sample_txt
