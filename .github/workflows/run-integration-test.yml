@@ -77,9 +77,27 @@ jobs:
         run: |
           echo "Running integration tests with parameter ${{ matrix.test-cases }}"
           echo "exit_code=${{ matrix.test-cases }}" >> "$GITHUB_OUTPUT"
+      - name: Run Makefile
+        id: run_make
+        run: |
+            make || echo "Make failed with exit code $?"; exit $?
+        
+      - name: Check exit code
+        run: |
+            if [ "${{ steps.run_make.outcome }}" == "failure" ]; then
+              echo "Makefile failed, exit code: ${{ steps.run_make.conclusion }}";
+              exit 1;
+            else
+              echo "Makefile ran successfully";
+            fi
       - name: Create ${{matrix.test-cases}} txt
         id: create_sample_txt
         run: |
+          set +e 
+          make test.integration.${{matrix.test-cases}} ${{needs.init.outputs.TEST_TAGS}} 
+          EXIT_CODE=$? 
+          echo "NUM_OF_FAILED_TESTS=$EXIT_CODE" >> $GITHUB_OUTPUT
+          exit "$EXIT_CODE"
           echo "This is a test file ${{matrix.test-cases}}" > myfile-${{matrix.test-cases}}.txt
           # Loop through each test case and upload the corresponding file
       - name: Upload each file as an artifact
@@ -104,7 +122,7 @@ jobs:
         if: github.event_name == 'schedule'
         uses: slackapi/slack-github-action@v2.0.0
         with:
-          webhook: ${{SLACK_WEBHOOK_URL}}
+          webhook: ${{secrets.SLACK_WEBHOOK_URL}}
           webhook-type: incoming-webhook
           payload: |
             {
