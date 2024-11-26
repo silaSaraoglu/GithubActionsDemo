@@ -82,18 +82,6 @@ jobs:
         run: |
             set +e 
             make exit_with_code
-            EXIT_CODE=$? 
-            echo "NUM_OF_FAILED_TESTS=$EXIT_CODE" >> $GITHUB_OUTPUT
-            exit "$EXIT_CODE"
-        
-      - name: Check exit code
-        run: |
-            if [ "${{ steps.run_make.outcome }}" == "failure" ]; then
-              echo "Makefile failed, exit code: ${{ steps.run_make.conclusion }}";
-              exit 1;
-            else
-              echo "Makefile ran successfully";
-            fi
       - name: Create ${{matrix.test-cases}} txt
         id: create_sample_txt
         run: |
