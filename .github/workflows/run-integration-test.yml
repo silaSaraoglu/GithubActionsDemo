@@ -80,7 +80,11 @@ jobs:
       - name: Run Makefile
         id: run_make
         run: |
+            set +e 
             make exit_with_code
+            EXIT_CODE=$? 
+            echo "NUM_OF_FAILED_TESTS=$EXIT_CODE" >> $GITHUB_OUTPUT
+            exit "$EXIT_CODE"
         
       - name: Check exit code
         run: |
