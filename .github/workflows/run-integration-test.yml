@@ -82,6 +82,7 @@ jobs:
         id: run_make
         run: |
             make exit_with_code
+        shell: bash
       - name: Create ${{matrix.test-cases}} txt
         id: create_sample_txt
         run: |
