@@ -3,16 +3,6 @@ CC = gcc                 # C compiler
 CFLAGS = -Wall -g        # Compiler flags (enable warnings and debugging)
 LDFLAGS =                # Linker flags (if any)
 
-# Directories
-SRCDIR = src
-OBJDIR = obj
-BINDIR = bin
-
-# Files
-SOURCES = $(wildcard $(SRCDIR)/*.c)          # Find all C source files in src/
-OBJECTS = $(SOURCES:$(SRCDIR)/%.c=$(OBJDIR)/%.o)  # Map .c files to .o object files
-TARGET = $(BINDIR)/my_program      # The final executable
-
 # Phony targets are not actual files, used to avoid conflicts with file names
 .PHONY: all clean run exit_with_code
 

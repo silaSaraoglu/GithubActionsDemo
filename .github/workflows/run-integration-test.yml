@@ -81,8 +81,9 @@ jobs:
       - name: Run Makefile
         id: run_make
         run: |
-            make exit_with_code
-        shell: bash
+            make run
+            EXIT_CODE=$? 
+            echo "$EXIT_CODE"
       - name: Create ${{matrix.test-cases}} txt
         id: create_sample_txt
         run: |
