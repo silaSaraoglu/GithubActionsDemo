@@ -80,7 +80,7 @@ jobs:
       - name: Run Makefile
         id: run_make
         run: |
-            make || echo "Make failed with exit code $?"; exit $?
+            make  exit_with_code|| echo "Make failed with exit code $?"; exit $?
         
       - name: Check exit code
         run: |
