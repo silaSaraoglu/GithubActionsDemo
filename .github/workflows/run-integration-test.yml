@@ -80,7 +80,7 @@ jobs:
       - name: Run Makefile
         id: run_make
         run: |
-            make  exit_with_code|| echo "Make failed with exit code $?"; exit $?
+            make exit_with_code || exit_code=$?; echo "Makefile exit code: $exit_code"; exit $exit_code
         
       - name: Check exit code
         run: |
@@ -93,11 +93,6 @@ jobs:
       - name: Create ${{matrix.test-cases}} txt
         id: create_sample_txt
         run: |
-          set +e 
-          make test.integration.${{matrix.test-cases}} ${{needs.init.outputs.TEST_TAGS}} 
-          EXIT_CODE=$? 
-          echo "NUM_OF_FAILED_TESTS=$EXIT_CODE" >> $GITHUB_OUTPUT
-          exit "$EXIT_CODE"
           echo "This is a test file ${{matrix.test-cases}}" > myfile-${{matrix.test-cases}}.txt
           # Loop through each test case and upload the corresponding file
       - name: Upload each file as an artifact
