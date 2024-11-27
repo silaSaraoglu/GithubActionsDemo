@@ -1,7 +1,5 @@
 name: run-integration-tests
 on:
-  schedule:
-    - cron: "0 9 * * *"
   workflow_dispatch:
     inputs:
       test-case:
